@@ -27,8 +27,8 @@ jobs:
           name: Create Cloudformation Stack
           command: |
             aws cloudformation create-stack \
-            --template-body file://main.yaml \
-            --parameters file://parameter.json \
+            --template-body file://infrastructure/main.yaml \
+            --parameters file://infrastructure/parameters.json \
             --stack-name testing-infra \
             --region ${AWS_DEFAULT_REGION}
 
