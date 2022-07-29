@@ -15,7 +15,7 @@ jobs:
     executor: python/default
     steps:
       - checkout
-      - pytho/dist
+      - python/dist
       - run: pip install flake8 && flake8
 
 workflows:
