@@ -26,11 +26,11 @@ jobs:
       - run:
           name: Create Cloudformation Stack
           command: |
-            aws cloudformation deploy \
-              --template-file main.yaml \
-              --parameters parameter.json \
-              --stack-name testing-infra \
-              --region ${AWS_DEFAULT_REGION}
+            aws cloudformation create-stack \
+            --template-body file://main.yaml \
+            --parameters file://parameter.json \
+            --stack-name testing-infra \
+            --region ${AWS_DEFAULT_REGION}
 
 workflows:
   main:
