@@ -2,6 +2,7 @@ version: 2.1
 
 orbs: 
     python: circleci/python@2.0.3
+    aws-cli: circleci/aws-cli@3.1.1
 
 jobs:
   lint-code:
@@ -16,8 +17,24 @@ jobs:
       - checkout
       - run: pip install flake8 && flake8
 
+  create-infrastructure:
+    executor: aws-cli/default
+    steps:
+      - checkout
+      - aws-cli/setup:
+          profile-name: default
+      - run:
+          name: Create Cloudformation Stack
+          command: |
+            aws cloudformation deploy \
+              --template-file main.yaml \
+              --parameters parameter.json \
+              --stack-name testing-infra \
+              --region ${AWS_DEFAULT_REGION}
+
 workflows:
   main:
     jobs:
+      - create-infrastructure
       - lint-code
       - run-test
