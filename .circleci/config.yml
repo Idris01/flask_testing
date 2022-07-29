@@ -8,14 +8,12 @@ jobs:
     executor: python/default
     steps:
       - checkout
-      - python/dist
       - run: pip install autopep8 && autopep8 --in-place --aggressive --aggressive *.py
 
   run-test:
     executor: python/default
     steps:
       - checkout
-      - python/dist
       - run: pip install flake8 && flake8
 
 workflows:
