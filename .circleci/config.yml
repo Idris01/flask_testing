@@ -11,9 +11,15 @@ jobs:
       - python/dist
       - run: pip install autopep8 && autopep8 --in-place --aggressive --aggressive *.py
 
+  run-test:
+    executor: python/default
+    steps:
+      - checkout
+      - pytho/dist
+      - run: pip install flake8 && flake8
+
 workflows:
   main:
     jobs:
       - lint-code
-      - python/test:
-          test-tool: flake8
+      - run-test
