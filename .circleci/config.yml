@@ -56,13 +56,13 @@ jobs:
 workflows:
   main:
     jobs:
+     - lint-code
+     - run-test
+          requires:
+            - lint-code
       - create-infrastructure
           requires:
             - run-test
-      - lint-code
-      - run-test
-          requires:
-            - lint-code
       - configure-infrastructure
           requires:
             - create-infrastructure
