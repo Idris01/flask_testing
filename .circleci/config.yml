@@ -26,15 +26,43 @@ jobs:
       - run:
           name: Create Cloudformation Stack
           command: |
-            aws cloudformation create-stack \
-            --template-body file://infrastructure/resource.yaml \
-            --parameters file://infrastructure/parameters.json \
-            --stack-name testing-infra \
-            --region ${AWS_DEFAULT_REGION}
+            cd infrastructure
+            ./create.sh
+
+
+  configure-infrastructure:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["48:64:38:1c:02:ab:7d:c6:91:75:b9:f9:12:b1:26:e0"]
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update ansible
+      - run: 
+          name: copy application files
+          command: |
+            cp requirements.txt templates/ app.py infrastructure/roles/deploy/files
+      - run: 
+          name: Configure Server
+          command: |
+            cd infrastructure/
+            sleep 60
+            ./update-inventory.sh
+            ansible-playbook -i inventory.txt main.yaml 
 
 workflows:
   main:
     jobs:
       - create-infrastructure
+          requires:
+            - run-test
       - lint-code
       - run-test
+          requires:
+            - lint-code
+      - configure-infrastructure
+          requires:
+            - create-infrastructure
