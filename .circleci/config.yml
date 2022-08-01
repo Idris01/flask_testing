@@ -56,8 +56,8 @@ jobs:
 workflows:
   main:
     jobs:
-     - lint-code
-     - run-test
+      - lint-code
+      - run-test
           requires:
             - lint-code
       - create-infrastructure
