@@ -27,7 +27,7 @@ jobs:
           name: Create Cloudformation Stack
           command: |
             cd infrastructure
-            ./create.sh
+            chmod u+x ./create.sh
 
 
   configure-infrastructure:
@@ -50,6 +50,7 @@ jobs:
           command: |
             cd infrastructure/
             sleep 60
+            chmod u+x update-inventory.sh
             ./update-inventory.sh
             ansible-playbook -i inventory.txt main.yaml 
 
