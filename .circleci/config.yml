@@ -50,8 +50,8 @@ jobs:
           command: |
             cd infrastructure/
             sleep 30 # wait for the instance to be completely provisioned
-            chmod u+x update-inventory.sh
-            ./update-inventory.sh
+            chmod u+x update_inventory.sh
+            ./update_inventory.sh
             ansible-playbook -i inventory.txt main.yaml 
 
 workflows:
