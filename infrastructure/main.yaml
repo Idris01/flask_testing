@@ -1,0 +1,12 @@
+---
+- name: Install apache Web Server on Remote machine
+  hosts: web
+  user: ubuntu
+  become: true
+  pre_tasks:
+    - name: "Wait for connection"
+      wait_for_connection:
+
+  roles:
+    - prepare
+    - deploy

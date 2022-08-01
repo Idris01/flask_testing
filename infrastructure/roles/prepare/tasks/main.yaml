@@ -1,0 +1,19 @@
+---
+- name: "update apt packages"
+  become: true
+  apt:
+    update_cache: yes
+
+- name: "install required packages"
+  become: true
+  apt:
+    pkg:
+      - python3-pip
+      - python3-venv
+      - nginx
+
+      
+- name: "remove unrequired requirements"
+  become: true
+  apt:
+    autoremove: yes

@@ -1,0 +1,44 @@
+---
+- name: "create application directory"
+  become: true
+  shell: |
+    mkdir -p /testapp
+
+- name: "copy application files"
+  become: true
+  copy:
+    src: "{{ item }}"
+    dest: /testapp
+  with_items:
+      - "app.py"
+      - "templates"
+      - "requirements.txt"
+      - "testapp.service"
+
+- name: "Install Requirements inside VirtualEnv"
+  shell: |
+    python3 -m venv venv
+    source venv/bin/activate
+    pip3 install -r requirements.txt
+  args:
+    chdir: /testapp
+
+- name: " Copy service configuration file file"
+  become: true
+  shell: |
+    sed -i "s#<gunicorn>#$(which gunicorn)#" testapp.service
+    mv testapp.service /etc/systemd/system
+    systemctl deamon-reload
+    systemctl start testapp
+    systemctl enable testapp
+  args:
+    chdir: /testapp
+
+- name: "Configure Nginx"
+  become: true
+  shell: |
+    sed -i 's/try_files \$uri \$uri\/ =404;/proxy_pass http:\/\/flaskapp;/' default
+    sed -i 's/^server/upstream flaskapp \{\n\tserver 127.0.0.1:8000;\n\}\nserver/' default
+    systemctl restart nginx
+  args:
+    chdir: /etc/nginx/sites-available
