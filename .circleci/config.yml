@@ -44,12 +44,12 @@ jobs:
       - run: 
           name: copy application files
           command: |
-            cp requirements.txt templates/ app.py infrastructure/roles/deploy/files
+            cp -r requirements.txt templates/ app.py infrastructure/roles/deploy/files
       - run: 
           name: Configure Server
           command: |
             cd infrastructure/
-            sleep 60
+            sleep 30 # wait for the instance to be completely provisioned
             chmod u+x update-inventory.sh
             ./update-inventory.sh
             ansible-playbook -i inventory.txt main.yaml 
