@@ -57,12 +57,12 @@ workflows:
   main:
     jobs:
       - lint-code
-      - run-test
+      - run-test:
           requires:
             - lint-code
-      - create-infrastructure
+      - create-infrastructure:
           requires:
             - run-test
-      - configure-infrastructure
+      - configure-infrastructure:
           requires:
             - create-infrastructure
