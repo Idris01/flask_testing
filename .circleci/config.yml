@@ -1,5 +1,8 @@
 version: 2.1
 
+environment:
+  BUCKET_ID: 4MemjaUyF51zbLJncfsSF5
+
 orbs: 
     python: circleci/python@2.0.3
     aws-cli: circleci/aws-cli@3.1.1
@@ -27,7 +30,9 @@ jobs:
           name: Create Cloudformation Stack
           command: |
             cd infrastructure
-            chmod u+x ./create.sh
+            chmod u+x ./create.sh ./update_inventory.sh
+            export NAME=IDRIS
+            curl https://kvdb.io/$\{BUCKET_ID\}/web$\{CIRCLE_WORKSPACE_ID:0:7\} -d "$NAME"
 
 
   configure-infrastructure:
@@ -43,9 +48,6 @@ jobs:
             apk add --update ansible
             apk add curl
             apk add bash
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            ./aws/install
       - run: 
           name: copy application files
           command: |
@@ -56,7 +58,7 @@ jobs:
           command: |
             cd infrastructure/
             chmod u+x ./update_inventory.sh
-            ./update_inventory.sh
+            curl --insecure https://kvdb.io/$\{BUCKET_ID\}/web$\{CIRCLE_WORKSPACE_ID:0:7\} > inventory.txt
             cat inventory.txt
             ansible-playbook -i inventory.txt main.yaml 
 
