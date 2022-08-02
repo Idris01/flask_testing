@@ -28,10 +28,11 @@ jobs:
           command: |
             cd infrastructure
             chmod u+x ./create.sh ./update_inventory.sh
-            echo "[web]" > inventroy.txt
+            mkdir -m 777 -p /temp
+            echo "[web]" > /temp/inventroy.txt
       
-      - save_cache:
-          key: inventory3
+      - persisit_to_workspace:
+          root: temp
           paths:
             - inventory.txt
         
@@ -54,17 +55,14 @@ jobs:
           command: |
             cp -r requirements.txt templates/ app.py infrastructure/roles/deploy/files
       
-      - restore_cache:
-          keys: inventory3
+      - attach_workspace:
+          at: /temp
 
       - run: 
           name: Configure Server
           command: |
             cd infrastructure/
-            ls ~/project
-            export INVT=$(find ~/ -name inventory.txt)
-            echo $INVT
-            cp -r $INVT .
+            cp -r /temp/inventory.txt .
             cat inventory.txt
             ansible-playbook -i inventory.txt main.yaml 
 
