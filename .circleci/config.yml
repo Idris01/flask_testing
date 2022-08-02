@@ -32,7 +32,7 @@ jobs:
 
   configure-infrastructure:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: python:3.9-alpine3.15
     steps:
       - checkout
       - add_ssh_keys:
@@ -42,6 +42,7 @@ jobs:
           command: |
             apk add --update ansible
             apk add curl
+            apk add bash
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
             sudo ./aws/install
