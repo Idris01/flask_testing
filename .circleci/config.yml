@@ -30,10 +30,10 @@ jobs:
             chmod u+x ./create.sh ./update_inventory.sh
             echo "[web]" > inventroy.txt
       
-      - persist_to_workspace:
-          root: .
+      - save_cache:
+          key: inventory
           paths:
-            - inventory.txt
+            - infrastructure/inventory.txt
         
 
 
@@ -54,8 +54,8 @@ jobs:
           command: |
             cp -r requirements.txt templates/ app.py infrastructure/roles/deploy/files
       
-      - attach_workspace:
-          at: ./infrastructure
+      - restore_cache:
+          key: inventory
 
       - run: 
           name: Configure Server
