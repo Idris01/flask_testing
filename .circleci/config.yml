@@ -55,7 +55,7 @@ jobs:
             cp -r requirements.txt templates/ app.py infrastructure/roles/deploy/files
       
       - restore_cache:
-          key: inventory
+          keys: inventory
 
       - run: 
           name: Configure Server
