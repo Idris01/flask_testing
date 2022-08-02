@@ -27,7 +27,15 @@ jobs:
           name: Create Cloudformation Stack
           command: |
             cd infrastructure
-            chmod u+x ./create.sh
+            chmod u+x ./create.sh ./update_inventory.sh
+            cat "[web]" > inventroy.txt
+      
+      - persist_to_workspace:
+          root: .
+          paths:
+            - inventory.txt
+        
+
 
 
   configure-infrastructure:
@@ -40,19 +48,19 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk update && apk add bash
             apk add --update ansible
       - run: 
           name: copy application files
           command: |
             cp -r requirements.txt templates/ app.py infrastructure/roles/deploy/files
+      
+      - attach_workspace:
+          at: ./infrastructure
+
       - run: 
           name: Configure Server
           command: |
             cd infrastructure/
-            sleep 30 # wait for the instance to be completely provisioned
-            chmod u+x update_inventory.sh
-            ./update_inventory.sh
             ansible-playbook -i inventory.txt main.yaml 
 
 workflows:
