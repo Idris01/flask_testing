@@ -61,8 +61,8 @@ jobs:
           name: Configure Server
           command: |
             cd infrastructure/
-            cp ~/infrastructure/inventory.txt 
-            cat inventory.txt.
+            cp ~/infrastructure/inventory.txt . 
+            cat inventory.txt
             ansible-playbook -i inventory.txt main.yaml 
 
 workflows:
