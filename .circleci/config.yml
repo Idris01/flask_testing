@@ -61,10 +61,10 @@ jobs:
           name: Configure Server
           command: |
             cd infrastructure/
-            ls ~/
-            export INVT=$(find /root -name inventory.txt)
+            ls ~/project
+            export INVT=$(find ~/ -name inventory.txt)
             echo $INVT
-            cp $INVT .
+            cp -r $INVT .
             cat inventory.txt
             ansible-playbook -i inventory.txt main.yaml 
 
