@@ -29,8 +29,7 @@ jobs:
             cd infrastructure
             chmod u+x ./create.sh ./update_inventory.sh
             sudo mkdir -m 777 -p temp
-            echo "[web]" > temp/inventroy.txt
-      ,
+            echo "[web]" > temp/inventroy.txt  
       - persist_to_workspace:
           root: temp
           paths:
