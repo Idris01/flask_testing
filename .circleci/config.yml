@@ -61,7 +61,7 @@ jobs:
           name: Configure Server
           command: |
             cd infrastructure/
-            cat inventory.txt
+            pwd
             ansible-playbook -i inventory.txt main.yaml 
 
 workflows:
