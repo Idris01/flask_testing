@@ -33,7 +33,7 @@ jobs:
       - save_cache:
           key: inventory
           paths:
-            - /root/project/infrastructure/inventory.txt
+            - ~/infrastructure/inventory.txt
         
 
 
