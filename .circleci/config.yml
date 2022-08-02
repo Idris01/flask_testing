@@ -29,9 +29,9 @@ jobs:
             cd infrastructure
             chmod u+x ./create.sh ./update_inventory.sh
             ./create.sh
-            sleep 300 # wait for the infrastructure to provision
+            sleep 240 # wait for the infrastructure to provision
             ./update_inventory.sh
-            curl https://kvdb.io/4MemjaUyF51zbLJncfsSF5/web$\{CIRCLE_WORKSPACE_ID:0:7\} -d "$WEB"
+            curl https://kvdb.io/4MemjaUyF51zbLJncfsSF5/web$\{CIRCLE_WORKSPACE_ID:0:7\} -d "$(cat inventory.txt)"
 
 
   configure-infrastructure:
