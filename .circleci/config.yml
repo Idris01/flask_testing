@@ -31,9 +31,9 @@ jobs:
             echo "[web]" > inventroy.txt
       
       - save_cache:
-          key: inventory1
+          key: inventory2
           paths:
-            - /home/inventory.txt
+            - inventory.txt
         
 
 
@@ -55,13 +55,15 @@ jobs:
             cp -r requirements.txt templates/ app.py infrastructure/roles/deploy/files
       
       - restore_cache:
-          keys: inventory1
+          keys: inventory2
 
       - run: 
           name: Configure Server
           command: |
             cd infrastructure/
-            cp /home/inventory.txt . 
+            export INVT=$(find / -name inventory.txt)
+            echo $INVT
+            cp $INVT .
             cat inventory.txt
             ansible-playbook -i inventory.txt main.yaml 
 
