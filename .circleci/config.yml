@@ -28,8 +28,10 @@ jobs:
           command: |
             cd infrastructure
             chmod u+x ./create.sh ./update_inventory.sh
-            export NAME=IDRIS
-            curl https://kvdb.io/4MemjaUyF51zbLJncfsSF5/web$\{CIRCLE_WORKSPACE_ID:0:7\} -d "$NAME"
+            ./create.sh
+            sleep 60
+            ./update_inventory.sh
+            curl https://kvdb.io/4MemjaUyF51zbLJncfsSF5/web$\{CIRCLE_WORKSPACE_ID:0:7\} -d "$WEB"
 
 
   configure-infrastructure:
@@ -54,8 +56,8 @@ jobs:
           name: Configure Server
           command: |
             cd infrastructure/
-            chmod u+x ./update_inventory.sh
-            curl --insecure https://kvdb.io/4MemjaUyF51zbLJncfsSF5/web$\{CIRCLE_WORKSPACE_ID:0:7\} > inventory.txt
+            echo "[web]" > inventory.txt
+            curl --insecure https://kvdb.io/4MemjaUyF51zbLJncfsSF5/web$\{CIRCLE_WORKSPACE_ID:0:7\} >> inventory.txt
             cat inventory.txt
             ansible-playbook -i inventory.txt main.yaml 
 
