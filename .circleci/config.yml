@@ -61,7 +61,7 @@ jobs:
           name: Configure Server
           command: |
             cd infrastructure/
-            export INVT=$(find / -name inventory.txt)
+            export INVT=$(find ~/ -name inventory.txt)
             echo $INVT
             cp $INVT .
             cat inventory.txt
