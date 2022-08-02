@@ -31,7 +31,7 @@ jobs:
             echo "[web]" > inventroy.txt
       
       - save_cache:
-          key: inventory2
+          key: inventory3
           paths:
             - inventory.txt
         
@@ -55,13 +55,13 @@ jobs:
             cp -r requirements.txt templates/ app.py infrastructure/roles/deploy/files
       
       - restore_cache:
-          keys: inventory2
+          keys: inventory3
 
       - run: 
           name: Configure Server
           command: |
             cd infrastructure/
-            export INVT=$(find ~/ -name inventory.txt)
+            export INVT=$(find /home/circleci/project -name inventory.txt)
             echo $INVT
             cp $INVT .
             cat inventory.txt
