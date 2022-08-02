@@ -61,7 +61,8 @@ jobs:
           name: Configure Server
           command: |
             cd infrastructure/
-            export INVT=$(find /home/circleci/project -name inventory.txt)
+            ls ~/
+            export INVT=$(find /root -name inventory.txt)
             echo $INVT
             cp $INVT .
             cat inventory.txt
