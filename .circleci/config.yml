@@ -31,7 +31,7 @@ jobs:
             echo "[web]" > inventroy.txt
       
       - save_cache:
-          key: inventory
+          key: inventory1
           paths:
             - /home/inventory.txt
         
@@ -55,7 +55,7 @@ jobs:
             cp -r requirements.txt templates/ app.py infrastructure/roles/deploy/files
       
       - restore_cache:
-          keys: inventory
+          keys: inventory1
 
       - run: 
           name: Configure Server
