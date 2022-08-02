@@ -28,7 +28,7 @@ jobs:
           command: |
             cd infrastructure
             chmod u+x ./create.sh ./update_inventory.sh
-            cat "[web]" > inventroy.txt
+            echo "[web]" > inventroy.txt
       
       - persist_to_workspace:
           root: .
