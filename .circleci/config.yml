@@ -31,7 +31,7 @@ jobs:
             ./create.sh
             sleep 200 # wait for the infrastructure to provision
             ./update_inventory.sh
-            curl https://kvdb.io/4MemjaUyF51zbLJncfsSF5/web$\{CIRCLE_WORKSPACE_ID:0:7\} -d "$(cat inventory.txt)"
+            curl "https://kvdb.io/4MemjaUyF51zbLJncfsSF5/web-`CIRCLE_WORKSPACE_ID:0:7`" -d "$(cat inventory.txt)"
 
 
   configure-infrastructure:
@@ -41,7 +41,6 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints: 
-            - "48:64:38:1c:02:ab:7d:c6:91:75:b9:f9:12:b1:26:e0"
             - "88:ea:0c:dc:7f:9a:71:71:56:79:4c:d9:eb:1a:06:3d"
       - run:
           name: Install dependencies
@@ -59,7 +58,7 @@ jobs:
           command: |
             cd infrastructure/
             echo "[web]" > inventory.txt
-            curl --insecure https://kvdb.io/4MemjaUyF51zbLJncfsSF5/web$\{CIRCLE_WORKSPACE_ID:0:7\} >> inventory.txt
+            curl --insecure "https://kvdb.io/4MemjaUyF51zbLJncfsSF5/web-`CIRCLE_WORKSPACE_ID:0:7`" >> inventory.txt
             cat inventory.txt
             ansible-playbook -i inventory.txt main.yaml 
 
